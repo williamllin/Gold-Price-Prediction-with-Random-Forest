@@ -1,10 +1,10 @@
 # Gold-Price-Prediction-with-Random-Forest
-# -*- coding: utf-8 -*-
+#-*- coding: utf-8 -*-
 """
 @author: linruibin
 """
 
-#X:非黃金類指標/ Y:黃金類指標(使用時機:當日開盤後)
+# X:非黃金類指標/ Y:黃金類指標(使用時機:當日開盤後)
 #使用非黃金類指標漲跌量，對應黃金類指標漲或跌訓練模型
 #學習非黃金類指標的價格變化與黃金相關股票漲跌之間的關係。
 #通過對非黃金類指標的當日價格變化進行標準化和分類，捕捉到市場中不同程度的價格波動對黃金價格的影響。
@@ -17,7 +17,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler 
 import yfinance as yf
 
-#===========取得歷史資料集======================
+# ===========取得歷史資料集======================
 #定義股票代碼及其對應變量名稱
 tickers = {
     'USO': 'USO',#油 
@@ -75,7 +75,7 @@ for ticker, prefix in tickers.items():
 #合併DataFrame
 combined_df = pd.concat(data_frames, axis=1)
 
-#===========新增資料集內容以便計算======================
+# ===========新增資料集內容以便計算======================
 #為每個股票創建'previous_close'和'price_change'欄位
 for prefix in tickers.values():
     combined_df[f'{prefix}_previous_Close'] = combined_df[f'{prefix}_Close'].shift(1)
@@ -102,7 +102,7 @@ combined_df_full.dropna(inplace=True)
 #處理nan
 combined_df.dropna(inplace=True)
 
-#===========定義X,y並切割訓練測試======================
+# ===========定義X,y並切割訓練測試======================
 #創建特徵列，排除指定的股票
 feature_columns = [f'{prefix}_price_change' for prefix in tickers.values() if prefix not in exclude_stocks]
 X = combined_df[feature_columns]
@@ -206,7 +206,7 @@ print("SGOL Test accuracy =", clf5.score(X_test, y5_test))
 print("SGOL f1_score :", test_f1_5)
 
 
-#===========取得最新數據======================
+# ===========取得最新數據======================
 #下載最新的數據並計算price_change，僅計算非黃金股票
 latest_prices = {}
 for ticker, prefix in tickers.items():
@@ -220,7 +220,7 @@ for ticker, prefix in tickers.items():
                 price_change = open_price - previous_low #close改low
                 latest_prices[f'{prefix}_price_change'] = price_change 
 
-#===========進行預測======================
+# ===========進行預測======================
 print()
 print("最新一天的預測結果:")
 #取得今日開盤資料後，預測收盤會漲還是跌
